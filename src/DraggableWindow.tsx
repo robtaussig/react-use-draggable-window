@@ -22,7 +22,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
       ...state.options.displacedOptions,
     };
     displaced.current = displace(el, options);
-  }, []);
+  }, [state.options]);
 
   useEffect(() => {
     return () => displaced.current.destroy();
