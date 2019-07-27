@@ -5,23 +5,27 @@ import displace from 'displacejs';
 
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
-  const windowRef = useRef(null);
+  const toolbarRef = useRef(null);
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
   const getToolbarRef = useCallback(ref => {
+    toolbarRef.current = ref;
+  }, []);
+
+  const getWindowRef =  useCallback(el => {
     const options = {
-        handle: ref,
+      handle: toolbarRef.current,
     };
-    displace(windowRef.current, options);
+  displace(el, options);
   }, []);
 
   if (state.open === false) return null;
   if (!state.component) throw new Error ('DraggableWindow is set to open, but was not provided a component');
 
   return (
-    <div id='draggable-window' ref={windowRef} className={state.options.wrapperClassName}>
+    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName}>
       <DraggableWindowToolbar
         getToolbarRef={getToolbarRef}
         menuItems={state.options.menuItems}
