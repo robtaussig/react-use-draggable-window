@@ -98,6 +98,7 @@ const styleFromOpenState = (openState: OpenState) => {
     case OpenState.minimized:
       return {
         minHeight: 'unset',
+        borderBottom: 'none',
       }
     case OpenState.maximized:
       return {
@@ -107,7 +108,9 @@ const styleFromOpenState = (openState: OpenState) => {
         width: '100%',
       }
     default:
-      return {};
+      return {
+        
+      };
   }
 };
 
