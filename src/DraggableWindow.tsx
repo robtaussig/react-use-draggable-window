@@ -12,42 +12,12 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
 
-  const getToolbarRef = useCallback(ref => {
-    if (toolbarPromise.current === null) {
-      toolbarPromise.current = ref;
-    } else if (typeof toolbarPromise.current === 'function') {
-      toolbarPromise.current(ref);
-    }
-  }, []);
-
-  const getWindowRef =  useCallback(ref => {
-    if (draggableWindowPromise.current === null) {
-      draggableWindowPromise.current = ref;
-    } else if (typeof draggableWindowPromise.current === 'function') {
-      draggableWindowPromise.current(ref);
-    }
-  }, []);
+  const getToolbarRef = useCallback(getRefPromise(toolbarPromise), []);
+  const getWindowRef =  useCallback(getRefPromise(draggableWindowPromise), []);
 
   useEffect(() => {
-    const getDraggableWindow = async () => {
-      return new Promise(resolve => {
-        if (draggableWindowPromise.current === null) {
-          draggableWindowPromise.current = resolve;
-        } else {
-          resolve(draggableWindowPromise.current);
-        }
-      });
-    };
-
-    const getToolbar = async () => {
-      return new Promise(resolve => {
-        if (toolbarPromise.current === null) {
-          toolbarPromise.current = resolve;
-        } else {
-          resolve(toolbarPromise.current);
-        }
-      });
-    };
+    const getDraggableWindow = resolveRefPromise(draggableWindowPromise);
+    const getToolbar = resolveRefPromise(toolbarPromise);
   
     const initialize = async () => {
       const draggableWindow = await getDraggableWindow();
@@ -81,6 +51,22 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
     </div>
   );
 };
+
+const getRefPromise = (refPromise: any) => (ref: any) => {
+  if (refPromise.current === null) {
+    refPromise.current = ref;
+  } else if (typeof refPromise.current === 'function') {
+    refPromise.current(ref);
+  }
+};
+
+const resolveRefPromise = (refPromise: any) => async () => new Promise(resolve => {
+  if (refPromise.current === null) {
+    refPromise.current = resolve;
+  } else {
+    resolve(refPromise.current);
+  }
+});
 
 export interface DraggableWindowProps {
   close: () => void,
