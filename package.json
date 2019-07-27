@@ -1,6 +1,6 @@
 {
   "name": "react-use-draggable-window",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Draggable Window hook for React",
   "main": "dist/index.js",
   "scripts": {
