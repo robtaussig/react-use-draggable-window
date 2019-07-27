@@ -7,7 +7,7 @@ export const DraggableBoundaries: FC<DraggableBoundariesProps> = ({ children }) 
 
   const closeDraggableWindow = useCallback(() => setDraggableWindowState(initialDraggableWindowState), []);
 
-  const openWindow = useCallback((component: React.Component, options: DraggableWindowOptions = {}) => {
+  const openWindow = useCallback((component: React.Component, options: DraggableWindowOptions = { displacedOptions: {} }) => {
     setDraggableWindowState(prev => ({
       ...prev,
       component,
@@ -43,6 +43,7 @@ export interface DraggableWindowState {
 export interface DraggableWindowOptions {
   menuItems?: MenuItem[],
   wrapperClassName?: string,
+  displacedOptions: object,
 }
 
 export interface MenuItem {

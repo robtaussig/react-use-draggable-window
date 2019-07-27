@@ -6,6 +6,7 @@ import displace from 'displacejs';
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
   const toolbarRef = useRef(null);
+  const displaced = useRef(null);
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
@@ -18,8 +19,13 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
     const options = {
       handle: toolbarRef.current,
       constrain: true,
+      ...state.options.displacedOptions,
     };
-  displace(el, options);
+    displaced.current = displace(el, options);
+  }, []);
+
+  useEffect(() => {
+    return () => displaced.current.destroy();
   }, []);
 
   if (state.open === false) return null;
