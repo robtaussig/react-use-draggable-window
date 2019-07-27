@@ -1,11 +1,11 @@
 {
   "name": "react-use-draggable-window",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Draggable Window hook for React",
   "main": "dist/index.js",
   "scripts": {
     "test": "node_modules/.bin/jest --verbose",
-    "compile": "node_modules/.bin/tsc -p .",
+    "compile": "node_modules/.bin/tsc -p . && node_modules/.bin/sass src/style.scss dist/style.css",
     "push": "npm run compile && git push && npm publish"
   },
   "repository": {
@@ -29,6 +29,7 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
+    "sass": "^1.22.7",
     "typescript": "^3.5.3"
   },
   "babel": {
