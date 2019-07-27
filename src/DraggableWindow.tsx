@@ -11,6 +11,10 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
+  const handleClose = useCallback(() => {
+    displaced.current.destroy();
+    close();
+  }, []);
   const getToolbarRef = useCallback(ref => {
     toolbarRef.current = ref;
   }, []);
@@ -24,10 +28,6 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
     displaced.current = displace(el, options);
   }, [state.options]);
 
-  useEffect(() => {
-    return () => displaced.current.destroy();
-  }, []);
-
   if (state.open === false) return null;
   if (!state.component) throw new Error ('DraggableWindow is set to open, but was not provided a component');
 
@@ -40,7 +40,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
         minimize={handleMinimize}
         maximize={handleMaximize}
         restore={handleRestore}
-        close={close}
+        close={handleClose}
       />
       {state.component}
     </div>
