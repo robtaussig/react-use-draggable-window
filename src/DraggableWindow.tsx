@@ -6,16 +6,13 @@ import displace from 'displacejs';
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
   const windowRef = useRef(null);
-  const toolbarRef = useRef(null);
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
-  const getToolbarRef = useCallback(ref => toolbarRef.current = ref, []);
-
-  useEffect(() => {
+  const getToolbarRef = useCallback(ref => {
     const options = {
-        handle: toolbarRef.current,
+        handle: ref,
     };
     displace(windowRef.current, options);
   }, []);
