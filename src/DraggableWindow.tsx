@@ -1,40 +1,44 @@
-import React, { FC, useState, useCallback, useEffect, useRef } from 'react';
+import React, { FC, useState, useCallback, useEffect, useRef, DOMElement } from 'react';
 import { DraggableWindowState } from './';
 import DraggableWindowToolbar from './DraggableWindowToolbar';
 import displace from 'displacejs';
 
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
-  const toolbarRef = useRef(null);
-  const displaced = useRef(null);
+  const [toolbar, setToolbar] = useState(null);
+  const [draggableWindow, setDraggableWindow] = useState(null);
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
-  const handleClose = useCallback(() => {
-    displaced.current.destroy();
-    displaced.current = null;
-    close();
-  }, []);
+
   const getToolbarRef = useCallback(ref => {
-    toolbarRef.current = ref;
-  }, []);
+    if (!toolbar) {
+      setToolbar(ref);
+    }
+  }, [toolbar]);
 
   const getWindowRef =  useCallback(el => {
-    if (displaced.current === null) {
+    if (!draggableWindow) {
+      setDraggableWindow(el);
+    }
+  }, [draggableWindow]);
+
+  useEffect(() => {
+    if (toolbar && draggableWindow) {
       const options = {
-        handle: toolbarRef.current,
+        handle: toolbar,
         constrain: true,
         ...state.options.displacedOptions,
       };
-      displaced.current = displace(el, options);
+      const displaced = displace(draggableWindow, options);
+
+      return displaced.destroy;
     }
-  }, [state.options]);
+  }, [toolbar, draggableWindow]);
 
   return (
-    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName} style={{
-      display: state.open ? 'flex' : 'hidden',
-    }}>
+    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName}>
       <DraggableWindowToolbar
         getToolbarRef={getToolbarRef}
         menuItems={state.options.menuItems}
@@ -42,7 +46,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
         minimize={handleMinimize}
         maximize={handleMaximize}
         restore={handleRestore}
-        close={handleClose}
+        close={close}
       />
       {state.component}
     </div>

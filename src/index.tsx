@@ -22,7 +22,7 @@ export const DraggableBoundaries: FC<DraggableBoundariesProps> = ({ children }) 
     <DraggableWindowContext.Provider value={openWindow}>
       <Fragment>
         {children}
-        <DraggableWindow close={closeDraggableWindow} state={draggableWindowState}/>
+        {draggableWindowState.open && <DraggableWindow close={closeDraggableWindow} state={draggableWindowState}/>}
       </Fragment>
     </DraggableWindowContext.Provider>
   );
