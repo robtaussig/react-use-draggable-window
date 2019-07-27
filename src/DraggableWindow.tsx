@@ -95,6 +95,10 @@ export enum OpenState {
 
 const styleFromOpenState = (openState: OpenState) => {
   switch (openState) {
+    case OpenState.minimized:
+      return {
+        minHeight: 'unset',
+      }
     case OpenState.maximized:
       return {
         left: 0,
