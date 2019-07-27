@@ -1,0 +1,48 @@
+{
+  "name": "react-hook-lib-template",
+  "version": "1.0.0",
+  "description": "Generic Template to write custom React hooks with tests and TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "node_modules/.bin/jest --verbose",
+    "compile": "node_modules/.bin/tsc -p .",
+    "push": "npm run compile && git push && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robtaussig/ReactHooksTemplateLibrary.git"
+  },
+  "dependencies": {
+    "@types/node": "^12.6.8",
+    "@types/websocket": "0.0.40"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "typescript": "^3.5.3"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "keywords": [
+    "react",
+    "react-hooks"
+  ],
+  "author": "Robert Taussig <robert.taussig@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robtaussig/ReactHooksTemplateLibrary/issues"
+  },
+  "homepage": "https://github.com/robtaussig/ReactHooksTemplateLibrary#readme"
+}
