@@ -67,7 +67,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   }, []);
 
   return (
-    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName}>
+    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName} style={styleFromOpenState(openState)}>
       <DraggableWindowToolbar
         getToolbarRef={getToolbarRef}
         menuItems={state.options.menuItems}
@@ -77,7 +77,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
         restore={handleRestore}
         close={close}
       />
-      {state.component}
+      {openState !== OpenState.minimized && state.component}
     </div>
   );
 };
@@ -92,5 +92,19 @@ export enum OpenState {
   maximized = 2,
   restored = 3,
 }
+
+const styleFromOpenState = (openState: OpenState) => {
+  switch (openState) {
+    case OpenState.maximized:
+      return {
+        left: 0,
+        top: 0,
+        height: '100%',
+        width: '100%',
+      }
+    default:
+      return {};
+  }
+};
 
 export default DraggableWindow;
