@@ -17,6 +17,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const getWindowRef =  useCallback(el => {
     const options = {
       handle: toolbarRef.current,
+      constrain: true,
     };
   displace(el, options);
   }, []);
