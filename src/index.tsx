@@ -1,5 +1,6 @@
 import React, { FC, createContext, Fragment, useCallback, useState, useContext } from 'react';
 import DraggableWindow from './DraggableWindow';
+import './style.css';
 
 export const DraggableBoundaries: FC<DraggableBoundariesProps> = ({ children }) => {
   const [draggableWindowState, setDraggableWindowState] = useState<DraggableWindowState>(initialDraggableWindowState);

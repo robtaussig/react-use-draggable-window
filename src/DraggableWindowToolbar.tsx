@@ -17,10 +17,10 @@ export const DraggableWindowToolbar: FC<DraggableWindowToolbarProps> = ({
   const _closeButton = <button onClick={close}>X</button>;
 
   return (
-    <nav>
+    <nav className='draggable-toolbar'>
       {menuItems.map((menuItem, idx) => {
         return (
-          <button key={`${menuItem.label}-${idx}`} onClick={menuItem.onClick}>{menuItem.label}</button>
+          <button key={`${menuItem.label}-${idx}`} className={'draggable-menu-item'} onClick={menuItem.onClick}>{menuItem.label}</button>
         );
       })}
       {openState === OpenState.minimized ?
