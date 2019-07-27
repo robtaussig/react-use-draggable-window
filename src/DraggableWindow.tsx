@@ -4,12 +4,13 @@ import DraggableWindowToolbar from './DraggableWindowToolbar';
 
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
-  if (state.open === false) return null;
-  if (!state.component) throw new Error ('DraggableWindow is set to open, but was not provided a component');
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
+
+  if (state.open === false) return null;
+  if (!state.component) throw new Error ('DraggableWindow is set to open, but was not provided a component');
 
   return (
     <div id='draggable-window' className={state.options.wrapperClassName}>
