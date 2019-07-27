@@ -13,6 +13,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
   const handleClose = useCallback(() => {
     displaced.current.destroy();
+    displaced.current = null;
     close();
   }, []);
   const getToolbarRef = useCallback(ref => {
