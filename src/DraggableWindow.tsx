@@ -31,11 +31,10 @@ export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
     }
   }, [state.options]);
 
-  if (state.open === false) return null;
-  if (!state.component) throw new Error ('DraggableWindow is set to open, but was not provided a component');
-
   return (
-    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName}>
+    <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName} style={{
+      display: state.open ? 'flex' : 'hidden',
+    }}>
       <DraggableWindowToolbar
         getToolbarRef={getToolbarRef}
         menuItems={state.options.menuItems}
