@@ -5,37 +5,66 @@ import displace from 'displacejs';
 
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
-  const [toolbar, setToolbar] = useState(null);
-  const [draggableWindow, setDraggableWindow] = useState(null);
+  const toolbarPromise = useRef(null);
+  const draggableWindowPromise = useRef(null);
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
 
   const getToolbarRef = useCallback(ref => {
-    if (!toolbar) {
-      setToolbar(ref);
+    if (toolbarPromise.current === null) {
+      toolbarPromise.current = ref;
+    } else if (typeof toolbarPromise.current === 'function') {
+      toolbarPromise.current(ref);
     }
-  }, [toolbar]);
+  }, []);
 
-  const getWindowRef =  useCallback(el => {
-    if (!draggableWindow) {
-      setDraggableWindow(el);
+  const getWindowRef =  useCallback(ref => {
+    if (draggableWindowPromise.current === null) {
+      draggableWindowPromise.current = ref;
+    } else if (typeof draggableWindowPromise.current === 'function') {
+      draggableWindowPromise.current(ref);
     }
-  }, [draggableWindow]);
+  }, []);
 
   useEffect(() => {
-    if (toolbar && draggableWindow) {
+    const getDraggableWindow = async () => {
+      return new Promise(resolve => {
+        if (draggableWindowPromise.current === null) {
+          draggableWindowPromise.current = resolve;
+        } else {
+          resolve(draggableWindowPromise.current);
+        }
+      });
+    };
+
+    const getToolbar = async () => {
+      return new Promise(resolve => {
+        if (toolbarPromise.current === null) {
+          toolbarPromise.current = resolve;
+        } else {
+          resolve(toolbarPromise.current);
+        }
+      });
+    };
+  
+    const initialize = async () => {
+      const draggableWindow = await getDraggableWindow();
+      const toolbar = await getToolbar();
+
+      toolbarPromise.current = true;
+      draggableWindowPromise.current = true;
+
       const options = {
         handle: toolbar,
         constrain: true,
-        ...state.options.displacedOptions,
       };
-      const displaced = displace(draggableWindow, options);
+      displace(draggableWindow, options);
+    };
 
-      return displaced.destroy;
-    }
-  }, [toolbar, draggableWindow]);
+    initialize();
+  }, []);
 
   return (
     <div id='draggable-window' ref={getWindowRef} className={state.options.wrapperClassName}>
