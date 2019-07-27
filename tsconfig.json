@@ -10,13 +10,15 @@
       "jsx": "react",
       "skipLibCheck": true,
       "lib": ["es2017"],
-      "types": ["react"]
+      "types": ["react", "displacejs"],
+      "typeRoots": [ "./types", "./node_modules/@types"]
   },
   
   "files": [
     "src/index.tsx"
   ],
   "exclude": [
-    "node_modules/**/*"
+    "node_modules/**/*",
+    "./types"
   ]
 }
