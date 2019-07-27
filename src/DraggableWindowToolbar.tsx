@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { MenuItem } from '.';
 import { OpenState } from './DraggableWindow';
 
@@ -12,7 +12,7 @@ export const DraggableWindowToolbar: FC<DraggableWindowToolbarProps> = ({
 }) => {
 
   const _minimizeButton = <button onClick={minimize}>_</button>;
-  const _restoreeButton = <button onClick={restore}>-</button>;
+  const _restoreButton = <button onClick={restore}>-</button>;
   const _maximizeButton = <button onClick={maximize}>^</button>;
   const _closeButton = <button onClick={close}>X</button>;
 
@@ -24,10 +24,19 @@ export const DraggableWindowToolbar: FC<DraggableWindowToolbarProps> = ({
         );
       })}
       {openState === OpenState.minimized ?
-        [_restoreeButton, _maximizeButton] :
+        <Fragment>
+          {_restoreButton}
+          {_maximizeButton}
+        </Fragment>:
         openState === OpenState.maximized ?
-          [_minimizeButton, _restoreeButton] :
-          [_minimizeButton, _maximizeButton]
+          <Fragment>
+            {_minimizeButton}
+            {_restoreButton}
+          </Fragment> :
+          <Fragment>
+            {_minimizeButton}
+            {_maximizeButton}
+          </Fragment>
       }
       {_closeButton}
     </nav>
