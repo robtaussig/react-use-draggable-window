@@ -2,6 +2,7 @@
   "compilerOptions": {
       "outDir": "./dist/",
       "sourceMap": true,
+      "esModuleInterop": true,
       "noImplicitAny": true,
       "moduleResolution": "node",
       "module": "commonjs",
@@ -9,9 +10,13 @@
       "jsx": "react",
       "skipLibCheck": true,
       "lib": ["es2017"],
+      "types": ["react"]
   },
   
   "files": [
-    "./src/index.ts"
+    "src/index.tsx"
   ],
+  "exclude": [
+    "node_modules/**/*"
+  ]
 }

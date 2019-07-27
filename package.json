@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@types/node": "^12.6.8",
-    "@types/websocket": "0.0.40"
+    "@types/websocket": "0.0.40",
+    "react": "^16.8.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
