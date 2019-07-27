@@ -1,20 +1,32 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useState, useCallback, useEffect, useRef } from 'react';
 import { DraggableWindowState } from './';
 import DraggableWindowToolbar from './DraggableWindowToolbar';
+import displace from 'displacejs';
 
 export const DraggableWindow: FC<DraggableWindowProps> = ({ close, state }) => {
   const [openState, setOpenState] = useState<OpenState>(OpenState.restored);
+  const windowRef = useRef(null);
+  const toolbarRef = useRef(null);
   
   const handleMinimize = useCallback(() => setOpenState(OpenState.minimized),[]);
   const handleMaximize = useCallback(() => setOpenState(OpenState.maximized),[]);
   const handleRestore = useCallback(() => setOpenState(OpenState.restored),[]);
+  const getToolbarRef = useCallback(ref => toolbarRef.current = ref, []);
+
+  useEffect(() => {
+    const options = {
+        handle: toolbarRef.current,
+    };
+    displace(windowRef.current, options);
+  }, []);
 
   if (state.open === false) return null;
   if (!state.component) throw new Error ('DraggableWindow is set to open, but was not provided a component');
 
   return (
-    <div id='draggable-window' className={state.options.wrapperClassName}>
+    <div id='draggable-window' ref={windowRef} className={state.options.wrapperClassName}>
       <DraggableWindowToolbar
+        getToolbarRef={getToolbarRef}
         menuItems={state.options.menuItems}
         openState={openState}
         minimize={handleMinimize}

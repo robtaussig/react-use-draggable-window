@@ -1,8 +1,9 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, DOMElement } from 'react';
 import { MenuItem } from '.';
 import { OpenState } from './DraggableWindow';
 
 export const DraggableWindowToolbar: FC<DraggableWindowToolbarProps> = ({
+  getToolbarRef,
   menuItems,
   openState,
   minimize,
@@ -17,7 +18,7 @@ export const DraggableWindowToolbar: FC<DraggableWindowToolbarProps> = ({
   const _closeButton = <button onClick={close}>X</button>;
 
   return (
-    <nav className='draggable-toolbar'>
+    <nav ref={getToolbarRef} className='draggable-toolbar'>
       {menuItems.map((menuItem, idx) => {
         return (
           <button key={`${menuItem.label}-${idx}`} className={'draggable-menu-item'} onClick={menuItem.onClick}>{menuItem.label}</button>
@@ -44,6 +45,7 @@ export const DraggableWindowToolbar: FC<DraggableWindowToolbarProps> = ({
 };
 
 interface DraggableWindowToolbarProps {
+  getToolbarRef: (ref: any) => void,
   menuItems?: MenuItem[],
   openState: OpenState,
   minimize: () => void,
